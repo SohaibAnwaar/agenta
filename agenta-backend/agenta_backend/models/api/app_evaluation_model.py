@@ -3,7 +3,7 @@ from typing import Optional, List, Dict
 from datetime import datetime
 from enum import Enum
 
-# ComparisonTableTypes = ["app_evaluation"]
+# evaluationTypes = ["evaluation"]
 class EvaluationTypeSettings(BaseModel):
     similarity_threshold: Optional[float]
 
@@ -14,7 +14,7 @@ class EvaluationType(str, Enum):
     human_a_b_testing = "human_a_b_testing"
     human_scoring = "human_scoring"
 
-class ComparisonTable(BaseModel):
+class Evaluation(BaseModel):
     id: str
     status: str
     evaluation_type: EvaluationType
@@ -37,7 +37,7 @@ class EvaluationRowOutput(BaseModel):
 
 
 class EvaluationRow(BaseModel):
-    comparison_table_id: str
+    evaluation_id: str
     inputs: List[EvaluationRowInput]
     outputs: List[EvaluationRowOutput]
     vote: Optional[str]
@@ -51,7 +51,7 @@ class EvaluationRowUpdate(BaseModel):
     score: Optional[str]
     outputs: List[EvaluationRowOutput]
 
-class NewComparisonTable(BaseModel):
+class NewEvaluation(BaseModel):
     evaluation_type: EvaluationType
     evaluation_type_settings: Optional[EvaluationTypeSettings]
     app_name: str
@@ -61,5 +61,5 @@ class NewComparisonTable(BaseModel):
     status: str = Field(...)
 
 
-class DeleteComparisonTable(BaseModel):
-    comparison_tables_ids: List[str]
+class DeleteEvaluation(BaseModel):
+    evaluations_ids: List[str]

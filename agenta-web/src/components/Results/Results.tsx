@@ -2,7 +2,7 @@ import {useState, useEffect} from "react"
 import {Table, Spin, Tag, Progress} from "antd"
 import {ColumnsType} from "antd/es/table"
 import {formatDate} from "@/lib/helpers/dateTimeHelper"
-import {AppEvaluationResponseType, ResultsTableDataType} from "@/lib/Types"
+import {EvaluationResponseType, ResultsTableDataType} from "@/lib/Types"
 import {useRouter} from "next/router"
 import {EvaluationType} from "@/lib/enums"
 import {
@@ -31,13 +31,13 @@ const Results: React.FC = () => {
         // TODO: move to api.ts
         setLoading(true)
         fetchData(
-            `${process.env.NEXT_PUBLIC_AGENTA_API_URL}/api/app_evaluations?app_name=${appName}`,
+            `${process.env.NEXT_PUBLIC_AGENTA_API_URL}/api/evaluations?app_name=${appName}`,
         )
             .then((responseData) => {
                 const fetchPromises: Promise<ResultsTableDataType>[] = responseData.map(
-                    (item: AppEvaluationResponseType) => {
+                    (item: EvaluationResponseType) => {
                         return fetchData(
-                            `${process.env.NEXT_PUBLIC_AGENTA_API_URL}/api/app_evaluations/${item.id}/results`,
+                            `${process.env.NEXT_PUBLIC_AGENTA_API_URL}/api/evaluations/${item.id}/results`,
                         )
                             .then((results) => {
                                 if (item.evaluation_type === EvaluationType.human_a_b_testing) {
@@ -72,12 +72,12 @@ const Results: React.FC = () => {
                 )
 
                 Promise.all(fetchPromises)
-                    .then((appEvaluations) => {
-                        // Filter out any appEvaluations that are undefined due to not having votes data
-                        const validAppEvaluations = appEvaluations.filter(
-                            (appEvaluation) => appEvaluation !== undefined,
+                    .then((evaluations) => {
+                        // Filter out any evaluations that are undefined due to not having votes data
+                        const validEvaluations = evaluations.filter(
+                            (evaluation) => evaluation !== undefined,
                         )
-                        setData(validAppEvaluations)
+                        setData(validEvaluations)
                         setLoading(false)
                     })
                     .catch((err) => {

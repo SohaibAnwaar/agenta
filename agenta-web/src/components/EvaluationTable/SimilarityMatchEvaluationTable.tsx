@@ -10,7 +10,7 @@ import {EvaluationFlow} from "@/lib/enums"
 import {evaluateWithSimilarityMatch} from "@/lib/services/evaluations"
 
 interface SimilarityMatchEvaluationTableProps {
-    appEvaluation: any
+    evaluation: any
     columnsCount: number
     evaluationRows: SimilarityMatchEvaluationTableRow[]
 }
@@ -32,14 +32,14 @@ interface SimilarityMatchEvaluationTableRow {
 }
 /**
  *
- * @param appEvaluation - Evaluation object
+ * @param evaluation - Evaluation object
  * @param evaluationRows - Evaluation rows
  * @param columnsCount - Number of variants to compare face to face (per default 2)
  * @returns
  */
 
 const SimilarityMatchEvaluationTable: React.FC<SimilarityMatchEvaluationTableProps> = ({
-    appEvaluation,
+    evaluation,
     evaluationRows,
     columnsCount,
 }) => {
@@ -48,7 +48,7 @@ const SimilarityMatchEvaluationTable: React.FC<SimilarityMatchEvaluationTablePro
         ? router.query.app_name[0]
         : router.query.app_name || ""
 
-    const variants = appEvaluation.variants
+    const variants = evaluation.variants
 
     const variantData = variants.map((variant: Variant) => {
         const {optParams, URIPath, isLoading, isError, error} = useVariant(appName, variant)
@@ -154,7 +154,7 @@ const SimilarityMatchEvaluationTable: React.FC<SimilarityMatchEvaluationTablePro
             rows[rowNumber].correctAnswer,
         )
         const isSimilar =
-            similarity >= appEvaluation.evaluationTypeSettings.similarityThreshold
+            similarity >= evaluation.evaluationTypeSettings.similarityThreshold
                 ? "true"
                 : "false"
 
@@ -171,10 +171,10 @@ const SimilarityMatchEvaluationTable: React.FC<SimilarityMatchEvaluationTablePro
             }
 
             updateEvaluationRow(
-                appEvaluation.id,
+                evaluation.id,
                 evaluation_row_id,
                 data,
-                appEvaluation.evaluationType,
+                evaluation.evaluationType,
             )
                 .then((data) => {
                     setRowValue(rowNumber, "score", data.score)
@@ -255,7 +255,7 @@ const SimilarityMatchEvaluationTable: React.FC<SimilarityMatchEvaluationTablePro
                                 borderRadius: 5,
                             }}
                         >
-                            {appEvaluation.dataset.name}
+                            {evaluation.dataset.name}
                         </span>
                         <span> )</span>
                     </div>
@@ -322,7 +322,7 @@ const SimilarityMatchEvaluationTable: React.FC<SimilarityMatchEvaluationTablePro
         <div>
             <h1>
                 Similarity match Evaluation (Threshold:{" "}
-                {appEvaluation.evaluationTypeSettings.similarityThreshold})
+                {evaluation.evaluationTypeSettings.similarityThreshold})
             </h1>
             <div style={{marginBottom: 20}}>
                 This evaluation type is calculating the similarity using Jaccard similarity.

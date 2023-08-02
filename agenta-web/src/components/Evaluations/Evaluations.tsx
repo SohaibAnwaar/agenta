@@ -90,7 +90,7 @@ export default function Evaluations() {
     }, [datasets, isDatasetsLoadingError])
 
     // TODO: move to api.ts
-    const createNewAppEvaluation = async (
+    const createNewEvaluation = async (
         evaluationType: string,
         evaluationTypeSettings: any,
         inputs: string[],
@@ -124,7 +124,7 @@ export default function Evaluations() {
             status: EvaluationFlow.EVALUATION_FINISHED,
         }
 
-        return postData(`${process.env.NEXT_PUBLIC_AGENTA_API_URL}/api/app_evaluations/`, data)
+        return postData(`${process.env.NEXT_PUBLIC_AGENTA_API_URL}/api/evaluations/`, data)
             .then((data) => {
                 return data.id
             })
@@ -211,7 +211,7 @@ export default function Evaluations() {
             evaluationTypeSettings["similarity_threshold"] = sliderValue
         }
 
-        const evaluationTableId = await createNewAppEvaluation(
+        const evaluationTableId = await createNewEvaluation(
             EvaluationType[selectedEvaluationType],
             evaluationTypeSettings,
             variantInputs,

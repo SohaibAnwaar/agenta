@@ -10,7 +10,7 @@ import {EvaluationFlow} from "@/lib/enums"
 import {fetchVariants} from "@/lib/services/api"
 
 interface EvaluationTableProps {
-    appEvaluation: any
+    evaluation: any
     columnsCount: number
     evaluationRows: EvaluationTableRow[]
 }
@@ -32,14 +32,14 @@ interface EvaluationTableRow {
 }
 /**
  *
- * @param appEvaluation - Evaluation object
+ * @param evaluation - Evaluation object
  * @param evaluationRows - Evaluation rows
  * @param columnsCount - Number of variants to compare face to face (per default 2)
  * @returns
  */
 
 const EvaluationTable: React.FC<EvaluationTableProps> = ({
-    appEvaluation,
+    evaluation,
     evaluationRows,
     columnsCount,
 }) => {
@@ -47,7 +47,7 @@ const EvaluationTable: React.FC<EvaluationTableProps> = ({
     const appName = Array.isArray(router.query.app_name)
         ? router.query.app_name[0]
         : router.query.app_name || ""
-    const variants = appEvaluation.variants
+    const variants = evaluation.variants
 
     const variantData = variants.map((variant: Variant) => {
         const {optParams, URIPath, isLoading, isError, error} = useVariant(appName, variant)
@@ -98,10 +98,10 @@ const EvaluationTable: React.FC<EvaluationTableProps> = ({
             }
 
             updateEvaluationRow(
-                appEvaluation.id,
+                evaluation.id,
                 evaluation_row_id,
                 data,
-                appEvaluation.evaluationType,
+                evaluation.evaluationType,
             )
                 .then((data) => {
                     setRowValue(rowIndex, "vote", vote)
@@ -203,7 +203,7 @@ const EvaluationTable: React.FC<EvaluationTableProps> = ({
                                 borderRadius: 5,
                             }}
                         >
-                            {appEvaluation.dataset.name}
+                            {evaluation.dataset.name}
                         </span>
                         <span> )</span>
                     </div>
